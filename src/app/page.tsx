@@ -19,11 +19,11 @@ const FILTERED_DATA = new Map<ImpactAssessmentData['Company Name'], ImpactAssess
 for (const row of DATA) {
   FILTERED_DATA.set(row['Company Name'], row)
 }
-const SANITIZED_DATA = Array.from(FILTERED_DATA.values())
+// const SANITIZED_DATA = Array.from(FILTERED_DATA.values())
 
-const FILTERED_DATA2 = DATA.filter(
-  (row, index) => DATA.findLastIndex(r => r['Company Name'] === row['Company Name']) === index
-)
+// const FILTERED_DATA2 = DATA.filter(
+//   (row, index) => DATA.findLastIndex(r => r['Company Name'] === row['Company Name']) === index
+// )
 const FILTERED_DATA3 = Object.values(
   DATA.reduce <Record<ImpactAssessmentData['Company Name'], ImpactAssessmentData>>(
     (map, row) => {
@@ -88,7 +88,15 @@ export default function Home () {
                 <td>{row['CO2 Scope 1 & 2 Revenue Adjusted']}</td>
                 <td>{row['CO2 Scope 3 Adjusted']}</td>
                 <td>{row['CO2 Scope 3 Revenue Adjusted']}</td>
-                <td>{row['ESG Score']}</td>
+                <td className='flex gap-1 items-center justify-start w-96'>
+                  <div style={{ width:50 }}>{Math.round(row['ESG Score'] * 100) / 100 }</div>
+                  <div style={{
+                    opacity: 0.2 + (1 - Math.round(row['ESG Score']) / 100),
+                    width:`${Math.round(row['ESG Score'])}%`,
+                    height:30,
+                    backgroundColor:'springgreen'
+                  }}/>
+                </td>
               </tr>)
             )}
           </tbody>
