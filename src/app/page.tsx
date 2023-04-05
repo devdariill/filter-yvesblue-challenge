@@ -17,11 +17,12 @@ export interface ImpactAssessmentData {
 export default function Home () {
   const [sort, setSort] = useState<keyof ImpactAssessmentData>('Company Name')
   const matches = useMemo(() => {
+    // eslint-disable-next-line prefer-regex-literals, no-useless-escape
     const numberRegex = new RegExp(/[\$\(\)\,]/g, 'ig')
-    return [...DATA].slice(0, 3).sort((a, b) => {
+    return [...DATA].sort((a, b) => {
       const aVal = Number(String(a[sort]).replace(numberRegex, ''))
       const bVal = Number(String(b[sort]).replace(numberRegex, ''))
-      if (!Number.isNaN(aVal) || !Number.isNaN(bVal)) {
+      if (!Number.isNaN(aVal) && !Number.isNaN(bVal)) {
       // if (typeof aVal === 'number' && typeof bVal === 'number') {
         return bVal - aVal
       }
