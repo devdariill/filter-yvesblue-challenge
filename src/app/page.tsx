@@ -54,67 +54,71 @@ export default function Home () {
     }).slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE)
   }, [sort, page])
   return (
-    <main >
-      <table>
-        <thead>
-          <tr>
-            <th colSpan={3}></th>
-            <th colSpan={2}>Women (Per 100)</th>
-            <th colSpan={2}>CO2 SCOPE 1 & 2</th>
-            <th colSpan={2}>CO2 SCOPE 3</th>
-            <th/>
-          </tr>
-          <tr>
-            <th className={sort === 'Company Name' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('Company Name') } }>Company Name</th>
-            <th className={sort === 'Total Revenue' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('Total Revenue') } }>Total Company Revenue</th>
-            <th className={sort === 'Company Market Cap' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('Company Market Cap') } }>Market Capitalization</th>
-            <th className={sort === 'Women Managers' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('Women Managers') } }>Managers</th>
-            <th className={sort === 'Women Employees' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('Women Employees') } }>Employees</th>
-            <th className={sort === 'CO2 Scope 1 & 2 Adjusted' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('CO2 Scope 1 & 2 Adjusted') } }>Total</th>
-            <th className={sort === 'CO2 Scope 1 & 2 Revenue Adjusted' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('CO2 Scope 1 & 2 Revenue Adjusted') } }>Rev Adj</th>
-            <th className={sort === 'CO2 Scope 3 Adjusted' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('CO2 Scope 3 Adjusted') } }>Total</th>
-            <th className={sort === 'CO2 Scope 3 Revenue Adjusted' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('CO2 Scope 3 Revenue Adjusted') } }>Rev Adj</th>
-            <th className={sort === 'ESG Score' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('ESG Score') } }>ESG Score</th>
-          </tr>
-        </thead>
-          <tbody>
-            {matches.map((row) => (
-              <tr key={row['Company Name']}>
-                <td>{row['Company Name']}</td>
-                <td>{row['Total Revenue']}</td>
-                <td>{row['Company Market Cap']}</td>
-                <td>{row['Women Managers']}</td>
-                <td>{row['Women Employees']}</td>
-                <td>{row['CO2 Scope 1 & 2 Adjusted']}</td>
-                <td>{row['CO2 Scope 1 & 2 Revenue Adjusted']}</td>
-                <td>{row['CO2 Scope 3 Adjusted']}</td>
-                <td>{row['CO2 Scope 3 Revenue Adjusted']}</td>
-                <td className='flex gap-1 items-center justify-start w-96'>
-                  <div style={{ width:50 }}>{Math.round(row['ESG Score'] * 100) / 100 }</div>
-                  <div style={{
-                    opacity: 0.2 + (1 - Math.round(row['ESG Score']) / 100),
-                    width:`${Math.round(row['ESG Score'])}%`,
-                    height:30,
-                    backgroundColor:'springgreen'
-                  }}/>
-                </td>
-              </tr>)
-            )}
-          </tbody>
-      </table>
-      <div className='flex gap-2 justify-evenly mb-3'>
-        {/* <button onClick={() => { setPage(page - PAGE_SIZE) }}>Prev</button> */}
-        {new Array(Math.ceil(FILTERED_DATA3.length / PAGE_SIZE))
-          .fill(true)
-          .map((_, index) =>
-          <button
-          className={index === page ? 'font-extrabold' : 'font-normal'}
-            type="button"
-            onClick={() => { setPage(index) }}
-            key={index}>{index + 1}
-          </button>)}
-        {/* <button onClick={() => { setPage(page + PAGE_SIZE) }}>Next</button> */}
-      </div>
+    <main>
+      <section className='overflow-x-auto'>
+        <table>
+          <thead>
+            <tr>
+              <th colSpan={3}></th>
+              <th colSpan={2}>Women (Per 100)</th>
+              <th colSpan={2}>CO2 SCOPE 1 & 2</th>
+              <th colSpan={2}>CO2 SCOPE 3</th>
+              <th/>
+            </tr>
+            <tr>
+              <th className={sort === 'Company Name' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('Company Name') } }>Company Name</th>
+              <th className={sort === 'Total Revenue' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('Total Revenue') } }>Total Company Revenue</th>
+              <th className={sort === 'Company Market Cap' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('Company Market Cap') } }>Market Capitalization</th>
+              <th className={sort === 'Women Managers' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('Women Managers') } }>Managers</th>
+              <th className={sort === 'Women Employees' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('Women Employees') } }>Employees</th>
+              <th className={sort === 'CO2 Scope 1 & 2 Adjusted' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('CO2 Scope 1 & 2 Adjusted') } }>Total</th>
+              <th className={sort === 'CO2 Scope 1 & 2 Revenue Adjusted' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('CO2 Scope 1 & 2 Revenue Adjusted') } }>Rev Adj</th>
+              <th className={sort === 'CO2 Scope 3 Adjusted' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('CO2 Scope 3 Adjusted') } }>Total</th>
+              <th className={sort === 'CO2 Scope 3 Revenue Adjusted' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('CO2 Scope 3 Revenue Adjusted') } }>Rev Adj</th>
+              <th className={sort === 'ESG Score' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('ESG Score') } }>ESG Score</th>
+            </tr>
+          </thead>
+            <tbody>
+              {matches.map((row) => (
+                <tr key={row['Company Name']}>
+                  <td>{row['Company Name']}</td>
+                  <td>{row['Total Revenue']}</td>
+                  <td>{row['Company Market Cap']}</td>
+                  <td>{row['Women Managers']}</td>
+                  <td>{row['Women Employees']}</td>
+                  <td>{row['CO2 Scope 1 & 2 Adjusted']}</td>
+                  <td>{row['CO2 Scope 1 & 2 Revenue Adjusted']}</td>
+                  <td>{row['CO2 Scope 3 Adjusted']}</td>
+                  <td>{row['CO2 Scope 3 Revenue Adjusted']}</td>
+                  <td className='flex gap-1 items-center justify-start w-96'>
+                    <div style={{ width:50 }}>{Math.round(row['ESG Score'] * 100) / 100 }</div>
+                    <div style={{
+                      opacity: 1 - (1 - Math.round(row['ESG Score']) / 100),
+                      width:`${Math.round(row['ESG Score'])}%`,
+                      height:30,
+                      backgroundColor:'springgreen'
+                    }}/>
+                  </td>
+                </tr>)
+              )}
+            </tbody>
+        </table>
+      </section>
+      <section>
+        <div className='flex gap-2 justify-evenly mb-3'>
+          {/* <button onClick={() => { setPage(page - PAGE_SIZE) }}>Prev</button> */}
+          {new Array(Math.ceil(FILTERED_DATA3.length / PAGE_SIZE))
+            .fill(true)
+            .map((_, index) =>
+            <button
+            className={index === page ? 'font-extrabold' : 'font-normal'}
+              type="button"
+              onClick={() => { setPage(index) }}
+              key={index}>{index + 1}
+            </button>)}
+          {/* <button onClick={() => { setPage(page + PAGE_SIZE) }}>Next</button> */}
+        </div>
+      </section>
     </main>
   )
 }
