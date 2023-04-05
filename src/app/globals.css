@@ -5,3 +5,12 @@
 :root {
   color-scheme: dark;
 }
+table{
+  text-align: left;
+}
+th {
+  background-color:  #333;  
+}
+th, td{
+  padding: 4px;
+}
