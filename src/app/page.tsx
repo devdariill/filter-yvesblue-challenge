@@ -38,20 +38,20 @@ export default function Home () {
   const matches = useMemo(() => {
     // eslint-disable-next-line prefer-regex-literals, no-useless-escape
     const numberRegex = new RegExp(/[\$\(\)\,]/g, 'ig')
-    return [...FILTERED_DATA3].slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE).sort((a, b) => {
+    return [...FILTERED_DATA3].sort((a, b) => {
       const aVal = Number(String(a[sort]).replace(numberRegex, ''))
       const bVal = Number(String(b[sort]).replace(numberRegex, ''))
       if (!Number.isNaN(aVal) && !Number.isNaN(bVal)) {
       // if (typeof aVal === 'number' && typeof bVal === 'number') {
-        return aVal - bVal
+        return bVal - aVal
       }
-      return (a[sort] as string).localeCompare(b[sort] as string)
+      return (b[sort] as string).localeCompare(a[sort] as string)
       // return a[sort] > b[sort] ? 1 : -1
       // return String(a[sort]).localeCompare(String(b[sort]))
       // if (typeof a[sort] === 'number' && typeof b[sort] === 'number') {
       //   return a[sort] - (b[sort])
       // }
-    })
+    }).slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE)
   }, [sort, page])
   return (
     <main >
