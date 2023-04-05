@@ -21,12 +21,23 @@ for (const row of DATA) {
 }
 const SANITIZED_DATA = Array.from(FILTERED_DATA.values())
 
+const FILTERED_DATA2 = DATA.filter(
+  (row, index) => DATA.findLastIndex(r => r['Company Name'] === row['Company Name']) === index
+)
+const FILTERED_DATA3 = Object.values(
+  DATA.reduce <Record<ImpactAssessmentData['Company Name'], ImpactAssessmentData>>(
+    (map, row) => {
+      map[row['Company Name']] = row
+      return map
+    }, {})
+)
+
 export default function Home () {
   const [sort, setSort] = useState<keyof ImpactAssessmentData>('Company Name')
   const matches = useMemo(() => {
     // eslint-disable-next-line prefer-regex-literals, no-useless-escape
     const numberRegex = new RegExp(/[\$\(\)\,]/g, 'ig')
-    return [...SANITIZED_DATA].sort((a, b) => {
+    return [...FILTERED_DATA3].sort((a, b) => {
       const aVal = Number(String(a[sort]).replace(numberRegex, ''))
       const bVal = Number(String(b[sort]).replace(numberRegex, ''))
       if (!Number.isNaN(aVal) && !Number.isNaN(bVal)) {
