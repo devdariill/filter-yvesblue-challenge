@@ -1,6 +1,38 @@
+'use client'
 import DATA from '@/data.json'
+import { useMemo, useState } from 'react'
 
+export interface ImpactAssessmentData {
+  'Company Name': string
+  'Total Revenue': string
+  'Company Market Cap': string
+  'Women Managers': number
+  'Women Employees': number
+  'ESG Score': number
+  'CO2 Scope 1 & 2 Adjusted': number | string
+  'CO2 Scope 1 & 2 Revenue Adjusted': number | string
+  'CO2 Scope 3 Adjusted': number | string
+  'CO2 Scope 3 Revenue Adjusted': number | string
+}
 export default function Home () {
+  const [sort, setSort] = useState<keyof ImpactAssessmentData>('Company Name')
+  const matches = useMemo(() => {
+    const numberRegex = new RegExp(/[\$\(\)\,]/g, 'ig')
+    return [...DATA].slice(0, 3).sort((a, b) => {
+      const aVal = Number(String(a[sort]).replace(numberRegex, ''))
+      const bVal = Number(String(b[sort]).replace(numberRegex, ''))
+      if (!Number.isNaN(aVal) || !Number.isNaN(bVal)) {
+      // if (typeof aVal === 'number' && typeof bVal === 'number') {
+        return bVal - aVal
+      }
+      return (a[sort] as string).localeCompare(b[sort] as string)
+      // return a[sort] > b[sort] ? 1 : -1
+      // return String(a[sort]).localeCompare(String(b[sort]))
+      // if (typeof a[sort] === 'number' && typeof b[sort] === 'number') {
+      //   return a[sort] - (b[sort])
+      // }
+    })
+  }, [sort])
   return (
     <main >
       <table>
@@ -13,20 +45,20 @@ export default function Home () {
             <th/>
           </tr>
           <tr>
-            <th>Company Name</th>
-            <th>Total Company Revenue</th>
-            <th>Market Capitalization</th>
-            <th>Managers</th>
-            <th>Employees</th>
-            <th>Total</th>
-            <th>Rev Adj</th>
-            <th>Total</th>
-            <th>Rev Adj</th>
-            <th>ESG Score</th>
+            <th className={sort === 'Company Name' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('Company Name') } }>Company Name</th>
+            <th className={sort === 'Total Revenue' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('Total Revenue') } }>Total Company Revenue</th>
+            <th className={sort === 'Company Market Cap' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('Company Market Cap') } }>Market Capitalization</th>
+            <th className={sort === 'Women Managers' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('Women Managers') } }>Managers</th>
+            <th className={sort === 'Women Employees' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('Women Employees') } }>Employees</th>
+            <th className={sort === 'CO2 Scope 1 & 2 Adjusted' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('CO2 Scope 1 & 2 Adjusted') } }>Total</th>
+            <th className={sort === 'CO2 Scope 1 & 2 Revenue Adjusted' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('CO2 Scope 1 & 2 Revenue Adjusted') } }>Rev Adj</th>
+            <th className={sort === 'CO2 Scope 3 Adjusted' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('CO2 Scope 3 Adjusted') } }>Total</th>
+            <th className={sort === 'CO2 Scope 3 Revenue Adjusted' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('CO2 Scope 3 Revenue Adjusted') } }>Rev Adj</th>
+            <th className={sort === 'ESG Score' ? 'font-bold' : 'font-normal'} onClick={() => { setSort('ESG Score') } }>ESG Score</th>
           </tr>
         </thead>
           <tbody>
-            {DATA.map((row) => (
+            {matches.map((row) => (
               <tr key={row['Company Name']}>
                 <td>{row['Company Name']}</td>
                 <td>{row['Total Revenue']}</td>
