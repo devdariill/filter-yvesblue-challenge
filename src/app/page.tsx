@@ -31,13 +31,14 @@ const FILTERED_DATA3 = Object.values(
       return map
     }, {})
 )
-
+const PAGE_SIZE = 10
 export default function Home () {
+  const [page, setPage] = useState<number>(0)
   const [sort, setSort] = useState<keyof ImpactAssessmentData>('Company Name')
   const matches = useMemo(() => {
     // eslint-disable-next-line prefer-regex-literals, no-useless-escape
     const numberRegex = new RegExp(/[\$\(\)\,]/g, 'ig')
-    return [...FILTERED_DATA3].sort((a, b) => {
+    return [...FILTERED_DATA3].slice(page * PAGE_SIZE, page * PAGE_SIZE + PAGE_SIZE).sort((a, b) => {
       const aVal = Number(String(a[sort]).replace(numberRegex, ''))
       const bVal = Number(String(b[sort]).replace(numberRegex, ''))
       if (!Number.isNaN(aVal) && !Number.isNaN(bVal)) {
@@ -51,7 +52,7 @@ export default function Home () {
       //   return a[sort] - (b[sort])
       // }
     })
-  }, [sort])
+  }, [sort, page])
   return (
     <main >
       <table>
@@ -101,6 +102,19 @@ export default function Home () {
             )}
           </tbody>
       </table>
+      <div className='flex gap-2 justify-evenly mb-3'>
+        {/* <button onClick={() => { setPage(page - PAGE_SIZE) }}>Prev</button> */}
+        {new Array(Math.ceil(FILTERED_DATA3.length / PAGE_SIZE))
+          .fill(true)
+          .map((_, index) =>
+          <button
+          className={index === page ? 'font-extrabold' : 'font-normal'}
+            type="button"
+            onClick={() => { setPage(index) }}
+            key={index}>{index + 1}
+          </button>)}
+        {/* <button onClick={() => { setPage(page + PAGE_SIZE) }}>Next</button> */}
+      </div>
     </main>
   )
 }
