@@ -14,17 +14,24 @@ export interface ImpactAssessmentData {
   'CO2 Scope 3 Adjusted': number | string
   'CO2 Scope 3 Revenue Adjusted': number | string
 }
+// const FILTERED_DATA: Map<ImpactAssessmentData['Company Name'], ImpactAssessmentData> =new Map()
+const FILTERED_DATA = new Map<ImpactAssessmentData['Company Name'], ImpactAssessmentData>()
+for (const row of DATA) {
+  FILTERED_DATA.set(row['Company Name'], row)
+}
+const SANITIZED_DATA = Array.from(FILTERED_DATA.values())
+
 export default function Home () {
   const [sort, setSort] = useState<keyof ImpactAssessmentData>('Company Name')
   const matches = useMemo(() => {
     // eslint-disable-next-line prefer-regex-literals, no-useless-escape
     const numberRegex = new RegExp(/[\$\(\)\,]/g, 'ig')
-    return [...DATA].sort((a, b) => {
+    return [...SANITIZED_DATA].sort((a, b) => {
       const aVal = Number(String(a[sort]).replace(numberRegex, ''))
       const bVal = Number(String(b[sort]).replace(numberRegex, ''))
       if (!Number.isNaN(aVal) && !Number.isNaN(bVal)) {
       // if (typeof aVal === 'number' && typeof bVal === 'number') {
-        return bVal - aVal
+        return aVal - bVal
       }
       return (a[sort] as string).localeCompare(b[sort] as string)
       // return a[sort] > b[sort] ? 1 : -1
